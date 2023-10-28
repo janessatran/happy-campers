@@ -9,6 +9,8 @@ interface AppProps {
 
 interface ParkProps {
   full_name: string;
+  latitude: number;
+  longitude: number;
 }
 
 const App = ({ arg }: AppProps) => {
@@ -30,7 +32,10 @@ const App = ({ arg }: AppProps) => {
     <div key={index} className="col-md-6 col-lg-4">
       <div className="card mb-4">
         <div className="card-body">
-          <h5 className="card-title">{park.full_name}</h5>
+          <h3 className="card-title">{park.full_name}</h3>
+          <span className="card-latlong">
+            latitude: {park.latitude}, longitude: {park.longitude}
+          </span>
         </div>
       </div>
     </div>
