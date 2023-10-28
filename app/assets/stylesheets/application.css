@@ -25,3 +25,8 @@ body {
 .leaflet-container {
   height: 100vh;
 }
+
+.leaflet-div-icon {
+  background: transparent;
+  border: 0px;
+}

@@ -1,13 +1,12 @@
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import L from "leaflet";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import * as React from "react";
 import SearchAppBar from "./AppBar";
-
+import iconUrl from "../images/camping.png";
 export interface ParkProps {
   full_name: string;
   description: string;
@@ -17,7 +16,6 @@ export interface ParkProps {
 
 const App = () => {
   const [parks, setParks] = useState([]);
-  const [value, setValue] = React.useState(0);
   const ref = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,7 +35,18 @@ const App = () => {
     .map((park: ParkProps, index: number) => {
       if (park.latitude && park.longitude) {
         return (
-          <Marker position={[park.latitude, park.longitude]} key={index}>
+          <Marker
+            position={[park.latitude, park.longitude]}
+            key={index}
+            icon={
+              new L.Icon({
+                iconUrl: iconUrl,
+                iconRetinaUrl: iconUrl,
+                iconSize: new L.Point(45, 45),
+                className: "leaflet-div-icon",
+              })
+            }
+          >
             <Popup>
               <h2>{park.full_name}</h2>
               <div>{park.description}</div>
