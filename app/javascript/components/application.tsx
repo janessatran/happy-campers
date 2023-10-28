@@ -2,18 +2,14 @@ import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
 import { useEffect } from "react";
-
-interface AppProps {
-  arg: string;
-}
-
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 interface ParkProps {
   full_name: string;
   latitude: number;
   longitude: number;
 }
 
-const App = ({ arg }: AppProps) => {
+const App = () => {
   const [parks, setParks] = useState([]);
 
   useEffect(() => {
@@ -28,7 +24,7 @@ const App = ({ arg }: AppProps) => {
       .then((res) => setParks(res));
   }, []);
 
-  const allParks = parks.map((park: ParkProps, index) => (
+  const allParks: ParkProps[] = parks.map((park: ParkProps, index) => (
     <div key={index} className="col-md-6 col-lg-4">
       <div className="card mb-4">
         <div className="card-body">
@@ -41,9 +37,21 @@ const App = ({ arg }: AppProps) => {
     </div>
   ));
 
+  const metaTag = document.head.querySelector(
+    "meta[name=mapbox_access_token]"
+  ) as HTMLMetaElement;
+  const accessToken = metaTag.content;
+  const url = `https://api.mapbox.com/styles/v1/mapbox/outdoors-v12/tiles/256/{z}/{x}/{y}@2x?access_token=${accessToken}`;
   return (
-    <div>
-      {`Hello, ${arg}!`}
+    <div className="app-container">
+      <div className="map-container">
+        <MapContainer center={[39, -98]} zoom={4}>
+          <TileLayer
+            url={url}
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+        </MapContainer>
+      </div>
       <div className="parks">{allParks}</div>
     </div>
   );
@@ -54,6 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (container) {
     const root = createRoot(container);
 
-    root.render(<App arg="Rails 7 with ESBuild!!!" />);
+    root.render(<App />);
   }
 });

@@ -13,3 +13,11 @@
  *= require_tree .
  *= require_self
  */
+
+.container {
+  height: 100vh;
+}
+
+.leaflet-container {
+  height: 400px;
+}
