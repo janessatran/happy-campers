@@ -1,16 +1,24 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { useState } from "react";
-import { useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-interface ParkProps {
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import * as React from "react";
+import SearchAppBar from "./AppBar";
+
+export interface ParkProps {
   full_name: string;
+  description: string;
   latitude: number;
   longitude: number;
 }
 
 const App = () => {
   const [parks, setParks] = useState([]);
+  const [value, setValue] = React.useState(0);
+  const ref = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const url = "/api/v1/parks/index";
@@ -24,18 +32,20 @@ const App = () => {
       .then((res) => setParks(res));
   }, []);
 
-  const allParks: ParkProps[] = parks.map((park: ParkProps, index) => (
-    <div key={index} className="col-md-6 col-lg-4">
-      <div className="card mb-4">
-        <div className="card-body">
-          <h3 className="card-title">{park.full_name}</h3>
-          <span className="card-latlong">
-            latitude: {park.latitude}, longitude: {park.longitude}
-          </span>
-        </div>
-      </div>
-    </div>
-  ));
+  const parkMarkers = parks
+    .slice(0, 25)
+    .map((park: ParkProps, index: number) => {
+      if (park.latitude && park.longitude) {
+        return (
+          <Marker position={[park.latitude, park.longitude]} key={index}>
+            <Popup>
+              <h2>{park.full_name}</h2>
+              <div>{park.description}</div>
+            </Popup>
+          </Marker>
+        );
+      }
+    });
 
   const metaTag = document.head.querySelector(
     "meta[name=mapbox_access_token]"
@@ -44,15 +54,19 @@ const App = () => {
   const url = `https://api.mapbox.com/styles/v1/mapbox/outdoors-v12/tiles/256/{z}/{x}/{y}@2x?access_token=${accessToken}`;
   return (
     <div className="app-container">
-      <div className="map-container">
-        <MapContainer center={[39, -98]} zoom={4}>
-          <TileLayer
-            url={url}
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          />
-        </MapContainer>
-      </div>
-      <div className="parks">{allParks}</div>
+      <Box sx={{ pb: 7 }} ref={ref}>
+        <CssBaseline />
+        {SearchAppBar()}
+        <div className="map-container">
+          <MapContainer center={[39, -98]} zoom={4}>
+            <TileLayer
+              url={url}
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            />
+            {parkMarkers}
+          </MapContainer>
+        </div>
+      </Box>
     </div>
   );
 };

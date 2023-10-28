@@ -14,10 +14,14 @@
  *= require_self
  */
 
+body {
+  margin: 0;
+}
+
 .container {
   height: 100vh;
 }
 
 .leaflet-container {
-  height: 400px;
+  height: 100vh;
 }
