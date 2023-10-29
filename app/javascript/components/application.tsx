@@ -7,15 +7,35 @@ import { createRoot } from "react-dom/client";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import SearchAppBar from "./AppBar";
 import iconUrl from "../images/camping.png";
+import { ThemeProvider, useTheme } from "@mui/material/styles";
+import { customTheme, themeOptions } from "./Theme";
+import ParkInfoDrawer from "./ParkInfoDrawer";
+import {
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+
 export interface ParkProps {
   full_name: string;
   description: string;
   latitude: number;
   longitude: number;
+  activities: string[];
+  park_code: string;
 }
+
+let parkCode: string;
 
 const App = () => {
   const [parks, setParks] = useState([]);
+  const [state, setState] = React.useState({
+    [parkCode]: false,
+  });
   const ref = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,11 +50,43 @@ const App = () => {
       .then((res) => setParks(res));
   }, []);
 
+  const toggleDrawer =
+    (parkCode: string, open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      console.log(event);
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+      console.log("JT DEBUG: ", parkCode);
+      setState({ ...state, [parkCode]: open });
+    };
+
+  const panel = (parkCode: string, park: ParkProps) => (
+    <Box
+      role="presentation"
+      onClick={toggleDrawer(parkCode, false)}
+      onKeyDown={toggleDrawer(parkCode, false)}
+    >
+      <div className="park-content">
+        <h2>{park.full_name}</h2>
+        <div>{park.description}</div>
+        <div className="park-activities">
+          <strong>Activities: </strong>
+          {park.activities.join(", ")}
+        </div>
+      </div>
+    </Box>
+  );
+
   const parkMarkers = parks
     .slice(0, 25)
     .map((park: ParkProps, index: number) => {
       if (park.latitude && park.longitude) {
-        return (
+        const marker = (
           <Marker
             position={[park.latitude, park.longitude]}
             key={index}
@@ -46,13 +98,26 @@ const App = () => {
                 className: "leaflet-div-icon",
               })
             }
+            riseOnHover={true}
+            eventHandlers={{
+              click: (_e) => {
+                console.log("JT DEBUG: park", park);
+                setState({ ...state, [park.park_code]: true });
+              },
+            }}
           >
-            <Popup>
-              <h2>{park.full_name}</h2>
-              <div>{park.description}</div>
-            </Popup>
+            <Drawer
+              anchor={"right"}
+              open={state[park.park_code]}
+              onClose={toggleDrawer(park.park_code, false)}
+            >
+              {panel(park.park_code, park)}
+            </Drawer>
+            ]
           </Marker>
         );
+
+        return marker;
       }
     });
 
@@ -61,21 +126,24 @@ const App = () => {
   ) as HTMLMetaElement;
   const accessToken = metaTag.content;
   const url = `https://api.mapbox.com/styles/v1/mapbox/outdoors-v12/tiles/256/{z}/{x}/{y}@2x?access_token=${accessToken}`;
+
   return (
     <div className="app-container">
-      <Box sx={{ pb: 7 }} ref={ref}>
-        <CssBaseline />
-        {SearchAppBar()}
-        <div className="map-container">
-          <MapContainer center={[39, -98]} zoom={4}>
-            <TileLayer
-              url={url}
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            />
-            {parkMarkers}
-          </MapContainer>
-        </div>
-      </Box>
+      <ThemeProvider theme={customTheme}>
+        <Box sx={{ pb: 7 }} ref={ref}>
+          <CssBaseline />
+          {SearchAppBar()}
+          <div className="map-container">
+            <MapContainer center={[39, -98]} zoom={4}>
+              <TileLayer
+                url={url}
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              />
+              {parkMarkers}
+            </MapContainer>
+          </div>
+        </Box>
+      </ThemeProvider>
     </div>
   );
 };

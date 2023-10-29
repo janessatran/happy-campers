@@ -18,6 +18,11 @@ namespace :data do
       record.latitude = park["latitude"]
       record.longitude = park["longitude"]
       record.state = park["states"]
+      activities = park["activities"].map do |activity| 
+         puts "activity: ", activity
+         activity["name"] 
+      end 
+      record.activities = activities
       record.save
     end
   end
