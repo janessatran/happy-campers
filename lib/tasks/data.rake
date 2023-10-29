@@ -19,11 +19,23 @@ namespace :data do
       record.longitude = park["longitude"]
       record.state = park["states"]
       activities = park["activities"].map do |activity| 
-         puts "activity: ", activity
+        #  puts "activity: ", activity
          activity["name"] 
       end 
       record.activities = activities
       record.save
+
+      park["images"].each do |image|
+        puts "image: ", image
+        park_image = ParkImage.find_or_create_by(title: image["title"])
+        park_image.credit = image["credit"]
+        park_image.url = image["url"]
+        park_image.alt_text = image["altText"]
+        park_image.caption = image["caption"]
+        park_image.park = record
+
+        park_image.save!
+      end
     end
   end
 end

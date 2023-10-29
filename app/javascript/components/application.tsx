@@ -27,6 +27,15 @@ export interface ParkProps {
   longitude: number;
   activities: string[];
   park_code: string;
+  park_images: ParkImageProps[];
+}
+
+export interface ParkImageProps {
+  credit: string;
+  url: string;
+  title: string;
+  alt_text: string;
+  caption: string;
 }
 
 let parkCode: string;
@@ -65,22 +74,40 @@ const App = () => {
       setState({ ...state, [parkCode]: open });
     };
 
-  const panel = (parkCode: string, park: ParkProps) => (
-    <Box
-      role="presentation"
-      onClick={toggleDrawer(parkCode, false)}
-      onKeyDown={toggleDrawer(parkCode, false)}
-    >
-      <div className="park-content">
-        <h2>{park.full_name}</h2>
-        <div>{park.description}</div>
-        <div className="park-activities">
-          <strong>Activities: </strong>
-          {park.activities.join(", ")}
+  const panel = (parkCode: string, park: ParkProps) => {
+    const parkImages = park.park_images;
+    console.log("JT DEBUG: park", park);
+
+    const parkImageElements = parkImages?.map((image) => {
+      return (
+        <>
+          <div className="park-image-title">{image.title}</div>
+          <div className="park-image-container">
+            <img src={image.url} alt={image.alt_text} className="park-image" />
+          </div>
+          <div className="park-image-caption">{image.caption}</div>
+        </>
+      );
+    });
+
+    return (
+      <Box
+        role="presentation"
+        onClick={toggleDrawer(parkCode, false)}
+        onKeyDown={toggleDrawer(parkCode, false)}
+      >
+        <div className="park-content">
+          <h2>{park.full_name}</h2>
+          <div>{park.description}</div>
+          <div className="park-activities">
+            <strong>Activities: </strong>
+            {park.activities.join(", ")}
+          </div>
+          {parkImageElements}
         </div>
-      </div>
-    </Box>
-  );
+      </Box>
+    );
+  };
 
   const parkMarkers = parks
     .slice(0, 25)
@@ -101,7 +128,6 @@ const App = () => {
             riseOnHover={true}
             eventHandlers={{
               click: (_e) => {
-                console.log("JT DEBUG: park", park);
                 setState({ ...state, [park.park_code]: true });
               },
             }}
@@ -113,7 +139,6 @@ const App = () => {
             >
               {panel(park.park_code, park)}
             </Drawer>
-            ]
           </Marker>
         );
 

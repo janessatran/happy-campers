@@ -2,8 +2,10 @@ class Api::V1::ParksController < ApplicationController
   before_action :set_park, only: %i[show]
  
   def index
-    park = Park.all.order(created_at: :desc)
-    render json: park
+    parks = Park.all.order(created_at: :desc)
+    respond_to do |format|
+      format.json { render :json => parks.to_json(:include => :park_images) }
+    end
   end
 
   def create

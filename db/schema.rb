@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_28_225751) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_29_190247) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,6 +23,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_28_225751) do
     t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "park_images", force: :cascade do |t|
+    t.text "caption"
+    t.text "credit"
+    t.text "title"
+    t.string "url"
+    t.text "alt_text"
+    t.bigint "park_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["park_id"], name: "index_park_images_on_park_id"
   end
 
   create_table "parks", force: :cascade do |t|

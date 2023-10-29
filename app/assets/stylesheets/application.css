@@ -14,8 +14,19 @@
  *= require_self
  */
 
+body,
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
+  overflow: hidden;
+}
+
+div.app {
+  height: 100%;
+  overflow: hidden;
 }
 
 .container {
@@ -23,12 +34,14 @@ body {
 }
 
 .leaflet-container {
+  box-sizing: border-box;
   height: 100vh;
 }
 
 .leaflet-div-icon {
   background: transparent;
   border: 0px;
+  opacity: 0.8;
 }
 
 .park-activities {
@@ -42,7 +55,7 @@ body {
 .MuiPaper-root {
   /* box-shadow: none !important; */
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
-  width: 35%;
+  width: 60%;
 }
 
 .MuiBox-root {
@@ -51,4 +64,25 @@ body {
 
 .park-content {
   margin: 1rem;
+}
+
+.park-image-container {
+  margin: 0.5rem;
+  text-align: center;
+}
+
+.park-image {
+  width: 450px;
+}
+
+.park-image-title {
+  margin-block: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.park-image-caption {
+  font-size: 0.8rem;
+  text-align: center;
 }
