@@ -10,7 +10,6 @@ import iconUrl from "../images/camping.png";
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import { customTheme, themeOptions } from "./theme";
 import {
-import SearchAppBar from './searchAppBar';
   Divider,
   Drawer,
   List,
