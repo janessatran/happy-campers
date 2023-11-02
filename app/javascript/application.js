@@ -2,4 +2,4 @@
 import "@hotwired/turbo-rails";
 import "./controllers";
 
-import "./components/Application";
+import "./components/application";
