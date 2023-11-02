@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import L from "leaflet";
-import * as React from "react";
+import React from "react";
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { SearchAppBar } from "./searchAppBar";
+import SearchAppBar from "./searchAppBar";
 import iconUrl from "../images/camping.png";
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import { customTheme, themeOptions } from "./theme";
