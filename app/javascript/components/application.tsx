@@ -5,12 +5,12 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import SearchAppBar from "./AppBar";
+import { SearchAppBar } from "./searchAppBar";
 import iconUrl from "../images/camping.png";
 import { ThemeProvider, useTheme } from "@mui/material/styles";
-import { customTheme, themeOptions } from "./Theme";
-import ParkInfoDrawer from "./ParkInfoDrawer";
+import { customTheme, themeOptions } from "./theme";
 import {
+import SearchAppBar from './searchAppBar';
   Divider,
   Drawer,
   List,
