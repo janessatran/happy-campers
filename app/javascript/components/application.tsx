@@ -75,7 +75,6 @@ const App = () => {
 
   const panel = (parkCode: string, park: ParkProps) => {
     const parkImages = park.park_images;
-    console.log("JT DEBUG: park", park);
 
     const parkImageElements = parkImages?.map((image) => {
       return (
