@@ -7,24 +7,16 @@ import { createRoot } from "react-dom/client";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import SearchAppBar from "./searchAppBar";
 import iconUrl from "../images/camping.png";
-import { ThemeProvider, useTheme } from "@mui/material/styles";
-import { customTheme, themeOptions } from "./theme";
-import {
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { customTheme } from "./theme";
+import { Drawer } from "@mui/material";
 
 export interface ParkProps {
   full_name: string;
   description: string;
   latitude: number;
   longitude: number;
-  activities: string[];
+  activities: Activity[];
   park_code: string;
   park_images: ParkImageProps[];
 }
@@ -35,6 +27,10 @@ export interface ParkImageProps {
   title: string;
   alt_text: string;
   caption: string;
+}
+
+export interface Activity {
+  description: string;
 }
 
 let parkCode: string;
@@ -69,7 +65,6 @@ const App = () => {
       ) {
         return;
       }
-      console.log("JT DEBUG: ", parkCode);
       setState({ ...state, [parkCode]: open });
     };
 
@@ -134,6 +129,7 @@ const App = () => {
               anchor={"right"}
               open={state[park.park_code]}
               onClose={toggleDrawer(park.park_code, false)}
+              key={index}
             >
               {panel(park.park_code, park)}
             </Drawer>
