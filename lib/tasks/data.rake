@@ -5,7 +5,7 @@ namespace :data do
   desc "Seeds database with parks data from NPS API"
   task prepare: :environment do
     uri = URI('https://developer.nps.gov/api/v1/parks?limit=1000')
-    header = {"X-Api-Key": ENV["HAPPY_CAMPERS_DATABASE_PASSWORD"]}
+    header = {"X-Api-Key": ENV["NPS_API_KEY"]}
 
     response = Net::HTTP.get_response(uri, header)
 
