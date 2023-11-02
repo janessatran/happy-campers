@@ -5,7 +5,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import SearchAppBar from "./searchAppBar";
+import SearchAppBar from "./SearchAppBar";
 import iconUrl from "../images/camping.png";
 import { ThemeProvider } from "@mui/material/styles";
 import { customTheme } from "./Theme";
