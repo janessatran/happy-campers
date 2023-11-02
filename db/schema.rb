@@ -15,17 +15,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_014835) do
     t.text "description"
   end
 
-  create_table "parks", force: :cascade do |t|
-    t.string "full_name"
-    t.string "park_code"
-    t.text "description"
-    t.decimal "latitude"
-    t.decimal "longitude"
-    t.string "state"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "park_activities", id: false, force: :cascade do |t|
     t.integer "activity_id"
     t.integer "park_id"
@@ -43,6 +32,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_014835) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["park_id"], name: "index_park_images_on_park_id"
+  end
+
+  create_table "parks", force: :cascade do |t|
+    t.string "full_name"
+    t.string "park_code"
+    t.text "description"
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.string "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
