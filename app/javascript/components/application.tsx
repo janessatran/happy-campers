@@ -101,7 +101,7 @@ const App = () => {
           <div>{park.description}</div>
           <div className="park-activities">
             <strong>Activities: </strong>
-            {park.activities.join(", ")}
+            {park.activities.map((activity) => activity.description).join(", ")}
           </div>
           {parkImageElements}
         </div>

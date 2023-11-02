@@ -1,6 +1,6 @@
 class CreatePark < ActiveRecord::Migration[7.0]
   def change
-    create_table :park do |t|
+    create_table :parks do |t|
       t.string :full_name
       t.string :park_code
       t.text :description

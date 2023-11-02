@@ -12,18 +12,18 @@ namespace :data do
     data = ActiveSupport::JSON.decode(response.body)
     parks_data = data["data"]
     parks_data.each do |park|
-      record = Park.find_or_create_by(full_name: park["fullName"])
-      record.park_code = park["parkCode"]
-      record.description = park["description"]
-      record.latitude = park["latitude"]
-      record.longitude = park["longitude"]
-      record.state = park["states"]
+      park_record = Park.find_or_create_by(full_name: park["fullName"])
+      park_record.park_code = park["parkCode"]
+      park_record.description = park["description"]
+      park_record.latitude = park["latitude"]
+      park_record.longitude = park["longitude"]
+      park_record.state = park["states"]
       activities = park["activities"].map do |activity| 
         #  puts "activity: ", activity
-         activity["name"] 
+        activity_record = Activity.find_or_create_by(description: activity["name"])
+        park_activity = ParkActivity.create(activity_id: activity_record.id, park_id: park_record.id)
       end 
-      record.activities = activities
-      record.save
+      park_record.save
 
       park["images"].each do |image|
         puts "image: ", image
@@ -32,7 +32,7 @@ namespace :data do
         park_image.url = image["url"]
         park_image.alt_text = image["altText"]
         park_image.caption = image["caption"]
-        park_image.park = record
+        park_image.park = park_record
 
         park_image.save!
       end
