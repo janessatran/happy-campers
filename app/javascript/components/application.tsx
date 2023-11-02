@@ -8,7 +8,7 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import SearchAppBar from "./searchAppBar";
 import iconUrl from "../images/camping.png";
 import { ThemeProvider } from "@mui/material/styles";
-import { customTheme } from "./theme";
+import { customTheme } from "./Theme";
 import { Drawer } from "@mui/material";
 
 export interface ParkProps {
